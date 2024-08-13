@@ -50,11 +50,15 @@ const io = new socketio.Server(httpserver, {
 
 // Socket.IO connection handling
 io.on("connection", async (socket) => {
+  
   const decoded = jwt.decode( socket.handshake.query.token);
+  
   const [userResult] = await query("SELECT id FROM patient WHERE email = ?", [
-    decoded.email,
+    decoded?.email,
   ]);
- const logs = await query("SELECT * FROM logs WHERE user_id = ?", [userResult.id]);
+
+ const logs = await query("SELECT * FROM logs WHERE user_id = ?", [userResult?.id]);
+
     socket.emit("newLog", logs)
 });
 

@@ -9,8 +9,7 @@ const query = promisify(db.query).bind(db);
  
 const addLog = asyncHandler(async (req, res) => {
   const userId = req.user.id;
-  // console.log(userId);
-
+  
   if (!userId) {
     return res.status(400).json({ message: "User ID is required." });
   }
@@ -51,7 +50,7 @@ const addLog = asyncHandler(async (req, res) => {
         res.status(500).json({ error: err.message });
       } else {
         req.io.emit('newLog', log);
-        // console.log(log)
+        
         res
           .status(201)
           .json(new ApiResponse(201, log, "log added successfully"));
@@ -65,10 +64,6 @@ const addLog = asyncHandler(async (req, res) => {
 
 const getLogsByUserId = asyncHandler(async (req, res) => {
   const userEmail = req.user.email; // Access the email from req.user
-
-  // console.log("User email:", userEmail);
-  
-
   if (!userEmail) {
     return res
       .status(400)
@@ -89,8 +84,8 @@ const getLogsByUserId = asyncHandler(async (req, res) => {
 
   if (logs.length === 0) {
     return res
-      .status(404)
-      .json(new ApiResponse(404, null, "No logs found for this user."));
+      .status(200)
+      .json(new ApiResponse(200, null, "No logs found for this user."));
   }
 
   res

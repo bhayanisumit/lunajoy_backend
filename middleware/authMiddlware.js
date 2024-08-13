@@ -24,10 +24,9 @@ const authenticateToken = async (req, res, next) => {
 
   // const temp = req.headers.cookie;
   const reqHeaders = getAuthCookieValue(req.headers.cookie);
-  
-  const token = req.cookies.auth || reqHeaders; //when i request from frontend i got undefined
-  // console.log("Request Headers:", reqHeaders)
-  // console.log("token from mid : " , token)
+    
+  const token =  req.headers.authorization//when i request from frontend i got undefined
+  console.log('token' ,jwt.decode(token)  );
 
   if (!token) {
     return res
@@ -38,7 +37,7 @@ const authenticateToken = async (req, res, next) => {
   try {
     // Ensure that JWT_SECRET is correctly loaded
     if (!process.env.JWT_SECRET) {
-      console.error("JWT_SECRET is not defined in the environment variables.");
+    
       return res.status(500).json({ message: "Internal server error." });
     }
 
@@ -46,7 +45,7 @@ const authenticateToken = async (req, res, next) => {
     const decoded = jwt.decode(token);
 
     const email = decoded.email;
-    // console.log("Extracted email:", email);
+   
 
     const [userResult] = await query("SELECT id FROM patient WHERE email = ?", [
       email,
