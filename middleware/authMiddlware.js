@@ -26,7 +26,7 @@ const authenticateToken = async (req, res, next) => {
   const reqHeaders = getAuthCookieValue(req.headers.cookie);
     
   const token =  req.headers.authorization//when i request from frontend i got undefined
-  console.log('token' ,jwt.decode(token)  );
+  
 
   if (!token) {
     return res
